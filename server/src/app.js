@@ -1,33 +1,33 @@
-import User from "../model/user.js";
-import createHttpError from "http-errors";
-import bcrypt from "bcryptjs";
+import express, { json } from "express"; //middleware in express i.e json
+import createHttpError, { isHttpError } from "http-errors";
 
-export const registerUser = async (req, res, next) => {
-  const { username, email, fullname, password } = req.body; //get info from client via form
-  try {
-    if (!username || !email || !fullname || !password) {
-      return next(createHttpError(400, "All Fields are required"));
-    }
-    //check if user already exists in db
-    const [existingUsername, existingEmail] = await Promise.all([
-      User.findOne({ username: username }),
-      User.findOne({ email: email }),
-    ]);
-    if (existingUsername) {
-      return next(createHttpError(409, "Username already exists"));
-    }
-    if (existingEmail) {
-      return next(createHttpError(409, "Email already exists"));
-    }
-    // proceed to register user if user dont exists
-    const salt = await bcrypt.genSalt(10); //encryption mechanism for to handle password
-    const hashedPassword = await bcrypt.hash(password, salt); //encrypt the user password
-    //proceed to create the user
-    const user = await User.create({
-      username,
-      email,
-      fullname,
-      password: hashedPassword,
-    });
-  } catch (error) {}
-};
+// import routes
+import userRoutes from "./routes/user.js";
+
+const app = express();
+app.use(json({ limit: "25mb" })); //parses requests to client side in json body format
+app.use(express.urlencoded({ extended: true }));
+app.disable("x-powered-by");
+
+// api
+app.use("/api/auth", userRoutes);
+
+// handle route errors
+app.use((req, res, next) => {
+  return next(createHttpError(404, `Route ${req.originalUrl} not found`));
+});
+
+//handle specific app errors
+app.use((error, req, res, next) => {
+  console.error(error);
+  let errorMessage = "Internal Server Error";
+  let statusCode = 500;
+  if (isHttpError(error)) {
+    statusCode = error.status;
+    errorMessage = error.message;
+  }
+  //sending error to client
+  res.status(statusCode).json({ error: error.message });
+});
+
+export default app;

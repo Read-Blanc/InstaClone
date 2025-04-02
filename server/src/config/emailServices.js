@@ -20,7 +20,9 @@ export const sendMail = async ({
       product: {
         // Appears in header & footer of e-mails
         name: "Instashots",
-        link: process.env.CLIENT_URL || "",
+        link:
+          process.env.CLIENT_URL ||
+          "https://insta-clone-jgz2upd6f-read-blancs-projects-002cbe8d.vercel.app",
       },
     });
     const email = {

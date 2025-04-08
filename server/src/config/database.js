@@ -1,7 +1,10 @@
+import dotenv from 'dotenv';
 import mongoose from "mongoose";
 
 const mongoUri = process.env.MONGODB_URI;
-
+dotenv.config();
+dotenv.config({ path: "./.env" });
+dotenv.config({ path: "./.env.local" });
 if (!mongoUri) {
   throw new Error("MONGODB_URI environment variable is not defined");
 }

@@ -40,11 +40,11 @@ import {Schema, model} from "mongoose";
      type: Date,
      select: false,
    },
-   PasswordResetToken: {
+   passwordResetToken: {
      type: String,
      select: false,
    },
-   PasswordResetTokenExpires: {
+   passwordResetTokenExpires: {
      type: Date,
      select: false,
    },

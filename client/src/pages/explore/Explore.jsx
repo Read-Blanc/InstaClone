@@ -1,7 +1,6 @@
-import React from 'react'
 
-export const Explore = () => {
-  // const { user } = useAuthContext()
+
+export default function Explore() {
   return (
     <div>Explore</div>
   )

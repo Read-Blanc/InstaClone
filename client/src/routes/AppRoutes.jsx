@@ -6,7 +6,7 @@ import { LazySpinner } from "../components/Spinner";
 import { useAuth } from "../store";
 import ForgotPassword from "../pages/forgotPassword/ForgotPassword";
 import Home from "../pages/home/Home";
-// import Explore from "../pages/explore/Explore";
+import  Explore  from "../pages/explore/Explore";
 import { PrivateRoutes, PublicRoutes, VerifyRoutes } from "./ProtectedRoutes";
 import SendVerifyMail from "../pages/verifyAccount/SendVerifyMail";
 import VerifyAccount from "../pages/verifyAccount/VerifyAccount";
@@ -14,12 +14,13 @@ import ResetPassword from "../pages/forgotPassword/ResetPassword";
 
 const AuthLayout = lazy(() => import("../layouts/AuthLayout"));
 const RootLayout = lazy(() => import("../layouts/RootLayout"));
-const VerifyAccountLayout = lazy(() => import("../layouts/VerifyAccountLayout"));
-
+const VerifyAccountLayout = lazy(() =>
+  import("../layouts/VerifyAccountLayout")
+);
 
 export default function AppRoutes() {
   const { accessToken, isCheckingAuth, user } = useAuth();
-  if(isCheckingAuth) {
+  if (isCheckingAuth) {
     return (
       <div className="h-screen w-screen flex justify-center items-center">
         <LazySpinner />
@@ -53,7 +54,7 @@ export default function AppRoutes() {
         {
           path: "reset-password/:userId/:passwordToken",
           element: <ResetPassword />,
-        }
+        },
       ],
     },
     {
@@ -61,8 +62,7 @@ export default function AppRoutes() {
       element: (
         <Suspense fallback={<LazySpinner />}>
           <PrivateRoutes accessToken={accessToken} user={user}>
-            <RootLayout />
-            {" "}
+            <RootLayout />{" "}
           </PrivateRoutes>
         </Suspense>
       ),
@@ -71,11 +71,11 @@ export default function AppRoutes() {
           path: "/",
           element: <Home />,
         },
-        // {
-        //   path: "explore",
-        //   element: <Explore />,
-        // },
-      ]
+        {
+          path: "explore",
+          element: <Explore />,
+        },
+      ],
     },
     {
       element: (
@@ -91,7 +91,7 @@ export default function AppRoutes() {
           element: <SendVerifyMail />,
         },
         {
-          path: "verify-email/:userId/:verficationToken",
+          path: "verify-email/:userId/:verificationToken",
           element: <VerifyAccount />,
         },
       ],

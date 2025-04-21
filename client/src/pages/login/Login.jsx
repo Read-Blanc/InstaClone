@@ -5,8 +5,11 @@ import { useState } from "react";
 import MetaArgs from "../../components/MetaArgs";
 import { loginUser } from "../../api/auth";
 import { toast } from "sonner";
+import { validatePassword } from "../../utils/formValidate";
+import { useAuth } from "../../store";
 
-export default function Register() {
+export default function Login() {
+  const { setAccessToken } = useAuth(); // Use the Auth context to set the access token
   const [revealPassword, setRevealPassword] = useState(false);
   const {
     register,
@@ -24,12 +27,12 @@ export default function Register() {
   const onSubmit = async (data) => {
     try {
       const res = await loginUser(data);
-      if (res.status !== 200) {
-        toast.success(res.data.message, { id: "login" });
+      if (res.status === 200) {
+        toast.success(res.data.message);
         setAccessToken(res.data.accessToken);
         navigate("/");
-    } 
-    }catch (error) {
+      }
+    } catch (error) {
       console.error("Login failed:", error);
     }
   };
@@ -76,9 +79,9 @@ export default function Register() {
                 className="input input-lg w-full"
                 id="password"
                 {...register("password", {
-                  validate: (value) => validatePassword(value, "Password is required"),
-                })
-                }
+                  validate: (value) =>
+                    validatePassword(value, "Password is required"),
+                })}
               />
             </label>
             <button
@@ -108,9 +111,7 @@ export default function Register() {
           <p>
             Don't have an account?{" "}
             <span className="text-[#8D0D76] font-bold">
-            <Link to="/auth/register">
-              Sign Up
-            </Link>
+              <Link to="/auth/register">Sign Up</Link>
             </span>
           </p>
         </div>

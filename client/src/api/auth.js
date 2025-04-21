@@ -9,22 +9,24 @@ export const loginUser = async (formData) => {
 };
 
 export const authenticateUser = async (token) => {
-  return await axiosInstance.get(
-    "/auth/user",
+  console.log("Token being sent:", token);
+  return await axiosInstance.get("/auth/user", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const resendEmailVerifyLink = async (token) => {
+  return await axiosInstance.post(
+    "/auth/resend-verification",
+    {},
     {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }
   );
-};
-
-export const resendEmailVerifyLink = async () => {
-  return await axiosInstance.post("/auth/resend-verification", {}, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
 };
 
 export const verifyEmailAccount = async (userId, verificationToken, Token) => {
@@ -48,4 +50,8 @@ export const resetPassword = async (userId, passwordToken, formData) => {
     `/auth/reset-password/${userId}/${passwordToken}`,
     formData
   );
+};
+
+export const logout = async () => {
+  return await axiosInstance.post("/auth/logout", {});
 };

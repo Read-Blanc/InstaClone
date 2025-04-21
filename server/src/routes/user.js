@@ -1,20 +1,57 @@
 import express from "express";
-import { registerUser, loginUser,  authenticateUser , resendEmailVerificationLink, verifyEmail, sendForgotPasswordmail, resetPassword} from "../controller/user.js";
+import {
+  registerUser,
+  loginUser,
+  authenticateUser,
+  resendEmailVerificationLink,
+  verifyEmail,
+  sendForgotPasswordmail,
+  resetPassword,
+  logout,
+} from "../controller/user.js";
 import { verifyToken, authorizeRoles } from "../middleware/auth.js";
+import { rateLimiter } from "../middleware/RateLimiter.js";
+import { clearCache, cacheMiddleware } from "../middleware/cache.js";
 
 const router = express.Router();
 
-router.post("/register", registerUser); 
-router.post("/login", loginUser);
-router.post("/resend-verification", verifyToken, authorizeRoles("user", "admin"), resendEmailVerificationLink);
+router.post("/register", registerUser);
+router.post("/login", rateLimiter, loginUser);
+router.post(
+  "/resend-verification",
+  rateLimiter,
+  verifyToken,
+  authorizeRoles("user", "admin"),
+  resendEmailVerificationLink
+);
 router.post("/forgot-password", sendForgotPasswordmail);
-router.post("/reset-password/:userId/:verificationToken", verifyToken, authorizeRoles("user", "admin"), resetPassword);
+router.patch("/reset-password/:userId/:verificationToken", resetPassword);
 
-// get
-router.get("/user", verifyToken, authorizeRoles("user", "admin"), authenticateUser);
+router.get(
+  "/user",
+  verifyToken,
+  authorizeRoles("user", "admin"),
+  cacheMiddleware("auth_User", 600),
+  authenticateUser
+);
 
-// router.patch("/user", verifyToken, authorizeRoles("user", "admin"));
+router.patch(
+  "/verify-account/:userId/:verificationToken",
+  verifyToken,
+  (req, res, next) => {
+    clearCache("auth_User", true);
+    next();
+  },
+  authorizeRoles("user", "admin"),
+  verifyEmail
+);
 
-router.patch("/verify-account/:userId/:verificationToken", verifyToken, authorizeRoles("admin"), verifyEmail );
-
+router.post(
+  "/logout",
+  (req, res, next) => {
+    clearCache(null, true);
+    next();
+  },
+  logout
+);
 export default router;

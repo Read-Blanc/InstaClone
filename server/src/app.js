@@ -2,13 +2,17 @@ import express, { json } from "express"; //middleware in express i.e json
 import createHttpError, { isHttpError } from "http-errors";
 import morgan from "morgan"; //logger middleware for express
 import cors from "cors"; //middleware for cross-origin resource sharing
+import { cacheMiddleware } from "./middleware/cache.js";
 
 // import routes
 import userRoutes from "./routes/user.js";
 
 const app = express();
 const corsOptions = {
-  origin: ["http://localhost:4600","https://insta-clone-zeta-lemon.vercel.app/"], // Allow requests from this origin
+  origin: [
+    "http://localhost:4600",
+    "https://insta-clone-zeta-lemon.vercel.app/",
+  ], // Allow requests from this origin
   methods: ["GET", "POST", "PATCH", "DELETE"], // Allowed HTTP methods
   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
   optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
@@ -19,9 +23,16 @@ app.use(json({ limit: "25mb" })); //parses requests to client side in json body 
 app.use(express.urlencoded({ extended: true }));
 app.disable("x-powered-by");
 
+import postRoutes from "./routes/post.js"; // import post routes
+app.use("/api/post", postRoutes);
+
 // home server route
 app.get("/", (req, res) => {
   res.send("Welcome to InstaShots server");
+});
+
+app.get("/user", cacheMiddleware("auth_user"), (req, res) => {
+  res.send("User data cached successfully");
 });
 
 // api

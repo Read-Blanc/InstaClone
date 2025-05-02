@@ -4,7 +4,7 @@ import Register from "../pages/register/Register";
 import Login from "../pages/login/Login";
 import { LazySpinner } from "../components/Spinner";
 import { useAuth } from "../store";
-import ForgotPassword from "../pages/forgotPassword/ForgotPassword";
+import ForgotPassword from "../pages/forgotPassword/forgotPassword";
 import Home from "../pages/home/Home";
 import  Explore  from "../pages/explore/Explore";
 import { PrivateRoutes, PublicRoutes, VerifyRoutes } from "./ProtectedRoutes";

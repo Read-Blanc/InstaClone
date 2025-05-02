@@ -55,11 +55,15 @@ export default function CardOptions({ post, user, accessToken }) {
                 className="font-semibold cursor-pointer"
                 onClick={() => toggleFollowUser(post?.userId?._id)}
               >
-                {followLoading
-                  ? "loading..."
-                  : user?.isFollowing?.includes(post?.userId?._id || "")
-                  ? "UnFollow"
-                  : "Follow"}
+                {isFollowing ? (
+                  <span className="text-red-500">
+                    {followLoading ? "Unfollowing..." : "Unfollow"}
+                  </span>
+                ) : (
+                  <span className="text-green-500">
+                    {followLoading ? "Following..." : "Follow"}
+                  </span>
+                )}
               </p>
               <div className="divider"></div>
             </>

@@ -62,9 +62,11 @@ import {Schema, model} from "mongoose";
    },
    followers:{
     type: [String],
+    default: [], //this is to track the userId of the users that are following the logged in user
    },
    following: {
      type: [String],
+      default: [], //this is to track the userId of the users that the logged in user is following
    },
    isPublic:{
     type: Boolean,

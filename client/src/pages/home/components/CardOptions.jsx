@@ -1,13 +1,37 @@
 import { useState } from "react";
 import Modal from "../../../components/Modal";
 import { Link } from "react-router";
+import { followUser } from "../../../api/auth";
+import { toast } from "sonner";
+import handleError from "../../../utils/handleError";
 
-export default function CardOptions({ post, user }) {
+export default function CardOptions({ post, user, accessToken }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [followLoading, setFollowLoading] = useState(false);
   const [isFollowing, setIsFollowing] = useState(
-    user?.isFollowing?.includes(post?.userId?._id || "")
+    user?.following?.includes(post?.userId?._id || "")
   ); // checks if post owner is included in logged in user following array - returns boolean
   console.log(post);
+  console.log(isFollowing);
+
+  const toggleFollowUser = async (followerId) => {
+    setFollowLoading(true);
+    try {
+      const res = await followUser(followerId, accessToken);
+      if (res.status === 200) {
+        toast.success(res.data.message);
+        setUser((prev) => ({
+          ...prev,
+          ...res.data.user,
+        }));
+        setIsFollowing(res.data.user.following.includes(followerId));
+      }
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setFollowLoading(false);
+    }
+  };
 
   return (
     <>
@@ -26,7 +50,17 @@ export default function CardOptions({ post, user }) {
         <div className="text-center p-3">
           {user?._id !== post?.userId?._id && (
             <>
-              <p>{isFollowing ? "UnFollow" : "Follow"}</p>
+              <p
+                role="button"
+                className="font-semibold cursor-pointer"
+                onClick={() => toggleFollowUser(post?.userId?._id)}
+              >
+                {followLoading
+                  ? "loading..."
+                  : user?.following?.includes(post?.userId?._id || "")
+                  ? "UnFollow"
+                  : "Follow"}
+              </p>
               <div className="divider"></div>
             </>
           )}

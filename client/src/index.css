@@ -4,7 +4,7 @@
 }
 
 @theme {
-  --font-rubik: "Rubik Variable", "sans-serif";
+  --font-rubik: "Rubik Variable", ui-sans-serif, system-ui, sans-serif;
 }
 
 * {
@@ -48,4 +48,3 @@ body {
   transition: opacity 300ms ease-in, transform 1000ms ease-in,
     filter 300ms ease-in;
 }
-

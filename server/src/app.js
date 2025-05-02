@@ -6,6 +6,8 @@ import { cacheMiddleware } from "./middleware/cache.js";
 
 // import routes
 import userRoutes from "./routes/user.js";
+import postRoutes from "./routes/post.js"; // import post routes
+import commentRoutes from "./routes/comment.js";
 
 const app = express();
 const corsOptions = {
@@ -21,10 +23,7 @@ app.use(cors(corsOptions)); //allows external origin points to communicate with 
 app.use(morgan("dev")); //logger middleware for express
 app.use(json({ limit: "25mb" })); //parses requests to client side in json body format
 app.use(express.urlencoded({ extended: true }));
-app.disable("x-powered-by");
-
-import postRoutes from "./routes/post.js"; // import post routes
-app.use("/api/post", postRoutes);
+app.disable("x-powered-by"); //disable tech-stack
 
 // home server route
 app.get("/", (req, res) => {
@@ -37,6 +36,8 @@ app.get("/user", cacheMiddleware("auth_user"), (req, res) => {
 
 // api
 app.use("/api/auth", userRoutes);
+app.use("/api/post", postRoutes);
+app.use("/api/comments", commentRoutes);
 
 // handle route errors
 app.use((req, res, next) => {

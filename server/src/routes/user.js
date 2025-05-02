@@ -8,6 +8,7 @@ import {
   sendForgotPasswordmail,
   resetPassword,
   logout,
+  followUser
 } from "../controller/user.js";
 import { verifyToken, authorizeRoles } from "../middleware/auth.js";
 import { rateLimiter } from "../middleware/RateLimiter.js";
@@ -54,4 +55,16 @@ router.post(
   },
   logout
 );
+
+router.patch(
+  "/follow/:id",
+  verifyToken,
+  authorizeRoles("user", "admin"),
+  (req, res, next) => {
+    clearCache("auth_User");
+    next();
+  },
+  followUser
+);
+
 export default router;

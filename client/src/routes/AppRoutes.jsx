@@ -11,6 +11,7 @@ import { PrivateRoutes, PublicRoutes, VerifyRoutes } from "./ProtectedRoutes";
 import SendVerifyMail from "../pages/verifyAccount/SendVerifyMail";
 import VerifyAccount from "../pages/verifyAccount/VerifyAccount";
 import ResetPassword from "../pages/forgotPassword/ResetPassword";
+import Comments from "../pages/comments/Comments";
 
 const AuthLayout = lazy(() => import("../layouts/AuthLayout"));
 const RootLayout = lazy(() => import("../layouts/RootLayout"));
@@ -75,6 +76,10 @@ export default function AppRoutes() {
           path: "explore",
           element: <Explore />,
         },
+        {
+          path: "post/:id",
+          element: <Comments />
+        }
       ],
     },
     {

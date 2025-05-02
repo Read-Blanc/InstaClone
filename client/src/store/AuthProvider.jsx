@@ -39,7 +39,6 @@ export default function AuthProvider({ children }) {
           setUser(res.data.user);
         }
       } catch (error) {
-        handleError(error);
         handleLogout();
         toast.error("There was an error trying to authenticate you");
         console.error(error);
@@ -48,7 +47,7 @@ export default function AuthProvider({ children }) {
       }
     };
     getUser();
-  }, [accessToken, handleLogout]);
+  }, [accessToken]);
 
   return (
     <AuthContext.Provider
@@ -56,6 +55,7 @@ export default function AuthProvider({ children }) {
         accessToken,
         setAccessToken,
         user,
+        setUser,
         isCheckingAuth,
         handleLogout,
       }}

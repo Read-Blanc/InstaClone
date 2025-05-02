@@ -60,6 +60,9 @@ import {Schema, model} from "mongoose";
      type: String,
      maxLength: [150, "Bio cannot be more than 150 characters"],
    },
+   followers:{
+    type: [String],
+   },
    following: {
      type: [String],
    },

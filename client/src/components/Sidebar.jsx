@@ -50,7 +50,11 @@ export default function Sidebar() {
                     isActive ? "font-bold bg-[#] text-white" : ""
                   }`}
                 >
-                  <i className="ri-information-line text-2xl"></i>
+                  <div className="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 overflow-hidden">
+                    <span className="text-xl font-bold">
+                      {user?.username?.[0] || "?"}
+                    </span>
+                  </div>
                   <span>Profile</span>
                 </span>
               )}
@@ -72,12 +76,12 @@ export default function Sidebar() {
           >
             <li>
               <NavLink to="/settings">
-              <i className="ri-settings-line text-2xl"></i>Settings
+                <i className="ri-settings-line text-2xl"></i>Settings
               </NavLink>
             </li>
             <li>
               <a href="/auth/login" onClick={handleLogout}>
-              <i className="ri-logout-box-line text-2xl"></i>Logout
+                <i className="ri-logout-box-line text-2xl"></i>Logout
               </a>
             </li>
           </ul>

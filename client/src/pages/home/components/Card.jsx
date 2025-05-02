@@ -3,7 +3,7 @@ import TimeAgo from "timeago-react";
 import CardOptions from "./CardOptions";
 import { useAuth, usePosts } from "../../../store";
 import { useState } from "react";
-import LazyloadComponent from "../../../components/LazyLoadImage";
+import LazyloadComponent from "../../../components/LazyloadImage";
 import useSlideControl from "../../../hooks/useSlideControl";
 import SeeLikes from "./SeeLikes";
 import { useForm } from "react-hook-form";

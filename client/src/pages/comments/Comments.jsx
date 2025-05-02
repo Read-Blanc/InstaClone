@@ -5,7 +5,7 @@ import { getAPost } from "../../api/post";
 import { useAuth } from "../../store";
 import useFetch from "../../hooks/useFetch";
 import MetaArgs from "../../components/MetaArgs";
-import LazyloadComponent from "../../components/LazyLoadImage";
+import LazyloadComponent from "../../components/LazyloadImage";
 import useSlideControl from "../../hooks/useSlideControl";
 import TimeAgo from "timeago-react";
 import { deleteComment } from "../../api/comment";

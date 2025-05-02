@@ -319,7 +319,7 @@ export default function Comments() {
                                 setData((prev) => ({
                                   ...prev,
                                   comments: prev.comments.filter(
-                                    (c) => c._id !== comment._id
+                                    (e) => e._id !== comment._id
                                   ),
                                 }));
                               }}

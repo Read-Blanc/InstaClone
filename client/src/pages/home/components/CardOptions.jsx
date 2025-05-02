@@ -57,7 +57,7 @@ export default function CardOptions({ post, user, accessToken }) {
               >
                 {followLoading
                   ? "loading..."
-                  : user?.following?.includes(post?.userId?._id || "")
+                  : user?.isFollowing?.includes(post?.userId?._id || "")
                   ? "UnFollow"
                   : "Follow"}
               </p>

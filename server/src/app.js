@@ -13,7 +13,7 @@ const app = express();
 const corsOptions = {
   origin: [
     "http://localhost:4600",
-    "https://insta-clone-01.vercel.app/api",
+    "https://insta-clone-01.vercel.app",
   ], // Allow requests from this origin
   methods: ["GET", "POST", "PATCH", "DELETE"], // Allowed HTTP methods
   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
